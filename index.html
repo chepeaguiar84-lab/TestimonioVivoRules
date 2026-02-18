@@ -1,9 +1,28 @@
 <html>
+  <head>
+    <title>Reglas públicas de Testimonio Vivo</title>
+  </head>
   <body>
     <h1>Reglas públicas de Testimonio Vivo</h1>
-    <ul>
-      <li><a href="firestore.rules">Firestore Rules</a></li>
-      <li><a href="storage.rules">Storage Rules</a></li>
-    </ul>
+
+    <h2>Firestore Rules</h2>
+    <pre>
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // tus reglas aquí...
+  }
+}
+    </pre>
+
+    <h2>Storage Rules</h2>
+    <pre>
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // tus reglas aquí...
+  }
+}
+    </pre>
   </body>
 </html>
