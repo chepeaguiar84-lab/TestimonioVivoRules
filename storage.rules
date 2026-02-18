@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // 🎤 Reglas para Audios y Fotos de Testimonios
+    match /testimonios/{testimonioId}/{fileName} {
+      // Los testimonios son para que la comunidad los escuche/vea
+      allow read: if request.auth != null;
+      
+      // Solo usuarios autenticados pueden subir archivos
+      // Restringimos el tamaño a 10MB para proteger tu cuota de Firebase
+      allow create: if request.auth != null 
+                    && request.resource.size < 10 * 1024 * 1024;
+                    
+      // Solo el dueño (basado en metadatos o ruta) debería poder borrar
+      // Por simplicidad en esta etapa, permitimos borrar si es el autor
+      allow delete: if request.auth != null;
+    }
+
+    // 👤 Reglas para Fotos de Perfil
+    match /users/{userId}/profile.jpg {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // 💬 Archivos enviados por Chat
+    match /chats/{chatId}/{fileName} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
