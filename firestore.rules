@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 👤 Reglas para Perfiles de Usuario
+    match /users/{userId} {
+      // Cualquier usuario autenticado puede ver un perfil (para el chat/testimonios)
+      allow read: if request.auth != null;
+      // Solo el dueño del perfil puede editar su propia información
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 📖 Reglas para Testimonios
+    match /testimonios/{testimonioId} {
+      // Los testimonios son públicos para lectura
+      allow read: if true;
+      // Solo usuarios autenticados pueden crear testimonios
+      allow create: if request.auth != null;
+      // Solo el autor original puede editar o borrar su testimonio
+      allow update, delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
+    }
+
+    // 💬 Reglas para el Chat en Tiempo Real
+    match /chats/{messageId} {
+      // Solo usuarios registrados pueden participar en el chat
+      allow read, write: if request.auth != null;
+    }
+
+    // 💎 Reglas para Planes Premium
+    match /plans/{planId} {
+      // Todo el mundo puede ver los precios y beneficios
+      allow read: if true;
+      // Nadie puede cambiar los planes desde la app (solo desde la consola de Firebase)
+      allow write: if false;
+    }
+    
+    // 💰 Reglas para Donaciones
+    match /donations/{donationId} {
+      // El usuario solo puede ver sus propias donaciones
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      // El usuario puede crear una donación si está autenticado
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+  }
+}
