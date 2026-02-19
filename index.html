@@ -1,6 +1,8 @@
 <html>
   <head>
     <title>Reglas públicas de Testimonio Vivo</title>
+    <!-- Librería de íconos Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -10,20 +12,31 @@
         color: #333;
       }
       pre {
-        font-size: 20px;   /* 👈 Texto grande */
+        font-size: 20px;
         line-height: 1.6;
-        background-color: #f4f4f4;
         padding: 20px;
         border-radius: 8px;
         overflow-x: auto;
       }
+      .firestore {
+        background-color: #e6f0ff; /* azul claro */
+        border: 2px solid #99c2ff;
+      }
+      .storage {
+        background-color: #e6ffe6; /* verde claro */
+        border: 2px solid #99ff99;
+      }
+      .icon {
+        margin-right: 8px;
+        color: #444;
+      }
     </style>
   </head>
   <body>
-    <h1>Reglas públicas de Testimonio Vivo</h1>
+    <h1><i class="fa-solid fa-shield-halved icon"></i> Reglas públicas de Testimonio Vivo</h1>
 
-    <h2>Firestore Rules</h2>
-    <pre>
+    <h2><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
+    <pre class="firestore">
 rules_version = '2';
 
 service cloud.firestore {
@@ -62,8 +75,8 @@ service cloud.firestore {
 }
     </pre>
 
-    <h2>Storage Rules</h2>
-    <pre>
+    <h2><i class="fa-solid fa-cloud icon"></i> Storage Rules</h2>
+    <pre class="storage">
 rules_version = '2';
 
 service firebase.storage {
