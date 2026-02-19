@@ -6,11 +6,7 @@
     <!-- Fuente elegante desde Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap">
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background-color: #fdfdfd;
-      }
+      body { font-family: Arial, sans-serif; margin: 0; background-color: #fdfdfd; }
       header {
         background: linear-gradient(135deg, #ffd700, #ffcc00);
         color: #333;
@@ -24,104 +20,36 @@
         100% { background: linear-gradient(135deg, #ffcc00, #ffd700); }
       }
       header h1 {
-        margin: 0;
-        font-size: 52px;
-        font-weight: bold;
-        font-family: 'Cinzel', serif;
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
+        margin: 0; font-size: 52px; font-weight: bold; font-family: 'Cinzel', serif;
+        color: #333; display: flex; align-items: center; justify-content: center; gap: 15px;
         animation: fadeIn 3s ease-in-out;
       }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      header svg {
-        width: 60px;
-        height: 60px;
-        fill: #b8860b;
-        position: relative;
-      }
-      /* Animación de brillo en el logo */
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px);} to { opacity: 1; transform: translateY(0);} }
+      header svg { width: 60px; height: 60px; fill: #b8860b; position: relative; }
       header svg::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
+        content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
         background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
         animation: shine 3s infinite;
       }
-      @keyframes shine {
-        0% { left: -100%; }
-        50% { left: 100%; }
-        100% { left: 100%; }
-      }
-      header p {
-        margin: 10px 0 0;
-        font-size: 22px;
-        font-style: italic;
-        color: #444;
-        animation: fadeIn 4s ease-in-out;
-      }
-      section {
-        padding: 40px;
-      }
-      h2 {
-        color: #333;
-        margin-top: 40px;
-        animation: slideIn 2s ease-in-out;
-      }
-      @keyframes slideIn {
-        from { opacity: 0; transform: translateX(-30px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
+      @keyframes shine { 0% { left: -100%; } 50% { left: 100%; } 100% { left: 100%; } }
+      header p { margin: 10px 0 0; font-size: 22px; font-style: italic; color: #444; animation: fadeIn 4s ease-in-out; }
+      section { padding: 40px; }
+      h2 { color: #333; margin-top: 40px; animation: slideIn 2s ease-in-out; }
+      @keyframes slideIn { from { opacity: 0; transform: translateX(-30px);} to { opacity: 1; transform: translateX(0);} }
       pre {
-        font-size: 20px;
-        line-height: 1.6;
-        padding: 20px;
-        border-radius: 8px;
-        overflow-x: auto;
+        font-size: 20px; line-height: 1.6; padding: 20px; border-radius: 8px; overflow-x: auto;
         animation: pulse 6s infinite;
       }
-      @keyframes pulse {
-        0% { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
-        50% { box-shadow: 0 0 20px rgba(0,0,0,0.4); }
-        100% { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
-      }
-      .firestore {
-        background-color: #e6f0ff;
-        border: 2px solid #99c2ff;
-      }
-      .storage {
-        background-color: #e6ffe6;
-        border: 2px solid #99ff99;
-      }
-      .icon {
-        margin-right: 8px;
-        color: #444;
-      }
-      footer {
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 20px;
-        margin-top: 40px;
-        animation: fadeIn 5s ease-in-out;
-      }
-      footer p {
-        margin: 0;
-        font-size: 16px;
-      }
+      @keyframes pulse { 0% { box-shadow: 0 0 5px rgba(0,0,0,0.2);} 50% { box-shadow: 0 0 20px rgba(0,0,0,0.4);} 100% { box-shadow: 0 0 5px rgba(0,0,0,0.2);} }
+      .firestore { background-color: #e6f0ff; border: 2px solid #99c2ff; }
+      .storage { background-color: #e6ffe6; border: 2px solid #99ff99; }
+      .icon { margin-right: 8px; color: #444; }
+      footer { background-color: #333; color: white; text-align: center; padding: 20px; margin-top: 40px; animation: fadeIn 5s ease-in-out; }
+      footer p { margin: 0; font-size: 16px; }
     </style>
   </head>
   <body>
     <header>
-      <!-- Logo SVG dorado con animación -->
       <h1>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
           <path d="M32 2l8 20h20l-16 12 6 20-18-12-18 12 6-20-16-12h20z"/>
@@ -135,13 +63,55 @@
       <h2><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
       <pre class="firestore">
 rules_version = '2';
-... (tus reglas completas aquí)
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /testimonios/{testimonioId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
+    }
+    match /chats/{messageId} {
+      allow read, write: if request.auth != null;
+    }
+    match /plans/{planId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /donations/{donationId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    }
+  }
+}
       </pre>
 
       <h2><i class="fa-solid fa-cloud icon"></i> Storage Rules</h2>
       <pre class="storage">
 rules_version = '2';
-... (tus reglas completas aquí)
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /testimonios/{testimonioId}/{fileName} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null 
+                    && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null;
+    }
+    match /users/{userId}/profile.jpg {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024;
+    }
+    match /chats/{chatId}/{fileName} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
       </pre>
     </section>
 
