@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap">
     <style>
       body { font-family: Arial, sans-serif; margin: 0; background-color: #fdfdfd; }
+
+      /* Banner animado */
       header {
         background: linear-gradient(135deg, #ffd700, #ffcc00);
         color: #333;
@@ -24,27 +26,74 @@
         color: #333; display: flex; align-items: center; justify-content: center; gap: 15px;
         animation: fadeIn 3s ease-in-out;
       }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px);} to { opacity: 1; transform: translateY(0);} }
       header svg { width: 60px; height: 60px; fill: #b8860b; position: relative; }
-      header svg::after {
-        content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
-        animation: shine 3s infinite;
-      }
-      @keyframes shine { 0% { left: -100%; } 50% { left: 100%; } 100% { left: 100%; } }
       header p { margin: 10px 0 0; font-size: 22px; font-style: italic; color: #444; animation: fadeIn 4s ease-in-out; }
-      section { padding: 40px; }
-      h2 { color: #333; margin-top: 40px; animation: slideIn 2s ease-in-out; }
-      @keyframes slideIn { from { opacity: 0; transform: translateX(-30px);} to { opacity: 1; transform: translateX(0);} }
+
+      /* Scroll reveal */
+      .reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease; }
+      .reveal.active { opacity: 1; transform: translateY(0); }
+
+      /* Firestore estilo fuego */
+      h2.firestore-title {
+        background: linear-gradient(90deg, red, orange, yellow);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 32px;
+        position: relative;
+      }
+      h2.firestore-title::after {
+        content: "🔥🔥🔥";
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 28px;
+        animation: flames 2s infinite alternate;
+      }
+      @keyframes flames {
+        from { transform: translateY(0); opacity: 0.7; }
+        to { transform: translateY(-5px); opacity: 1; }
+      }
+      .firestore {
+        background-color: #fff5f5;
+        border: 2px solid #ff4d4d;
+        box-shadow: 0 0 15px rgba(255,0,0,0.6);
+      }
+
+      /* Storage estilo nube con lluvia */
+      h2.storage-title {
+        background: linear-gradient(90deg, #0066ff, #00ccff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 32px;
+        position: relative;
+      }
+      h2.storage-title::after {
+        content: "💧💧💧";
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        animation: rain 1.5s infinite;
+      }
+      @keyframes rain {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(10px); opacity: 0; }
+      }
+      .storage {
+        background-color: #f0f8ff;
+        border: 2px solid #3399ff;
+        box-shadow: 0 0 15px rgba(0,102,255,0.6);
+      }
+
       pre {
         font-size: 20px; line-height: 1.6; padding: 20px; border-radius: 8px; overflow-x: auto;
-        animation: pulse 6s infinite;
       }
-      @keyframes pulse { 0% { box-shadow: 0 0 5px rgba(0,0,0,0.2);} 50% { box-shadow: 0 0 20px rgba(0,0,0,0.4);} 100% { box-shadow: 0 0 5px rgba(0,0,0,0.2);} }
-      .firestore { background-color: #e6f0ff; border: 2px solid #99c2ff; }
-      .storage { background-color: #e6ffe6; border: 2px solid #99ff99; }
-      .icon { margin-right: 8px; color: #444; }
-      footer { background-color: #333; color: white; text-align: center; padding: 20px; margin-top: 40px; animation: fadeIn 5s ease-in-out; }
+
+      footer { background-color: #333; color: white; text-align: center; padding: 20px; margin-top: 40px; }
       footer p { margin: 0; font-size: 16px; }
     </style>
   </head>
@@ -60,8 +109,8 @@
     </header>
 
     <section>
-      <h2><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
-      <pre class="firestore">
+      <h2 class="firestore-title reveal"><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
+      <pre class="firestore reveal">
 rules_version = '2';
 
 service cloud.firestore {
@@ -90,8 +139,8 @@ service cloud.firestore {
 }
       </pre>
 
-      <h2><i class="fa-solid fa-cloud icon"></i> Storage Rules</h2>
-      <pre class="storage">
+      <h2 class="storage-title reveal"><i class="fa-solid fa-cloud icon"></i> Storage Rules</h2>
+      <pre class="storage reveal">
 rules_version = '2';
 
 service firebase.storage {
@@ -118,5 +167,22 @@ service firebase.storage {
     <footer>
       <p><i class="fa-solid fa-lock"></i> Testimonio Vivo © 2026 — Seguridad y transparencia para la comunidad</p>
     </footer>
+
+    <!-- Script scroll reveal -->
+    <script>
+      function revealOnScroll() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 100;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", revealOnScroll);
+      window.addEventListener("load", revealOnScroll);
+    </script>
   </body>
 </html>
