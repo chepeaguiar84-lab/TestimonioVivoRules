@@ -1,3 +1,29 @@
+<html>
+  <head>
+    <title>Reglas públicas de Testimonio Vivo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+      }
+      h1, h2 {
+        color: #333;
+      }
+      pre {
+        font-size: 20px;   /* 👈 Texto grande */
+        line-height: 1.6;
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Reglas públicas de Testimonio Vivo</h1>
+
+    <h2>Storage Rules</h2>
+    <pre>
 rules_version = '2';
 
 service firebase.storage {
@@ -31,3 +57,6 @@ service firebase.storage {
     }
   }
 }
+    </pre>
+  </body>
+</html>
