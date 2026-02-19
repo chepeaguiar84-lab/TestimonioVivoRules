@@ -3,13 +3,82 @@
     <title>Reglas públicas de Testimonio Vivo</title>
     <!-- Librería de íconos Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Fuente elegante desde Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap">
     <style>
       body {
         font-family: Arial, sans-serif;
-        margin: 40px;
+        margin: 0;
+        background-color: #fdfdfd;
       }
-      h1, h2 {
+      header {
+        background: linear-gradient(135deg, #ffd700, #ffcc00);
         color: #333;
+        padding: 50px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        animation: gradientShift 8s infinite alternate;
+      }
+      @keyframes gradientShift {
+        0% { background: linear-gradient(135deg, #ffd700, #ffcc00); }
+        100% { background: linear-gradient(135deg, #ffcc00, #ffd700); }
+      }
+      header h1 {
+        margin: 0;
+        font-size: 52px;
+        font-weight: bold;
+        font-family: 'Cinzel', serif;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        animation: fadeIn 3s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      header svg {
+        width: 60px;
+        height: 60px;
+        fill: #b8860b;
+        position: relative;
+      }
+      /* Animación de brillo en el logo */
+      header svg::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
+        animation: shine 3s infinite;
+      }
+      @keyframes shine {
+        0% { left: -100%; }
+        50% { left: 100%; }
+        100% { left: 100%; }
+      }
+      header p {
+        margin: 10px 0 0;
+        font-size: 22px;
+        font-style: italic;
+        color: #444;
+        animation: fadeIn 4s ease-in-out;
+      }
+      section {
+        padding: 40px;
+      }
+      h2 {
+        color: #333;
+        margin-top: 40px;
+        animation: slideIn 2s ease-in-out;
+      }
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
       }
       pre {
         font-size: 20px;
@@ -17,92 +86,67 @@
         padding: 20px;
         border-radius: 8px;
         overflow-x: auto;
+        animation: pulse 6s infinite;
+      }
+      @keyframes pulse {
+        0% { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        50% { box-shadow: 0 0 20px rgba(0,0,0,0.4); }
+        100% { box-shadow: 0 0 5px rgba(0,0,0,0.2); }
       }
       .firestore {
-        background-color: #e6f0ff; /* azul claro */
+        background-color: #e6f0ff;
         border: 2px solid #99c2ff;
       }
       .storage {
-        background-color: #e6ffe6; /* verde claro */
+        background-color: #e6ffe6;
         border: 2px solid #99ff99;
       }
       .icon {
         margin-right: 8px;
         color: #444;
       }
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        animation: fadeIn 5s ease-in-out;
+      }
+      footer p {
+        margin: 0;
+        font-size: 16px;
+      }
     </style>
   </head>
   <body>
-    <h1><i class="fa-solid fa-shield-halved icon"></i> Reglas públicas de Testimonio Vivo</h1>
+    <header>
+      <!-- Logo SVG dorado con animación -->
+      <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 2l8 20h20l-16 12 6 20-18-12-18 12 6-20-16-12h20z"/>
+        </svg>
+        Testimonio Vivo
+      </h1>
+      <p>Reglas públicas — Seguridad, transparencia y confianza</p>
+    </header>
 
-    <h2><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
-    <pre class="firestore">
+    <section>
+      <h2><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
+      <pre class="firestore">
 rules_version = '2';
+... (tus reglas completas aquí)
+      </pre>
 
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // 👤 Reglas para Perfiles de Usuario
-    match /users/{userId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId;
-    }
-
-    // 📖 Reglas para Testimonios
-    match /testimonios/{testimonioId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
-    }
-
-    // 💬 Reglas para el Chat en Tiempo Real
-    match /chats/{messageId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 💎 Reglas para Planes Premium
-    match /plans/{planId} {
-      allow read: if true;
-      allow write: if false;
-    }
-    
-    // 💰 Reglas para Donaciones
-    match /donations/{donationId} {
-      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-    }
-  }
-}
-    </pre>
-
-    <h2><i class="fa-solid fa-cloud icon"></i> Storage Rules</h2>
-    <pre class="storage">
+      <h2><i class="fa-solid fa-cloud icon"></i> Storage Rules</h2>
+      <pre class="storage">
 rules_version = '2';
+... (tus reglas completas aquí)
+      </pre>
+    </section>
 
-service firebase.storage {
-  match /b/{bucket}/o {
-    
-    // 🎤 Reglas para Audios y Fotos de Testimonios
-    match /testimonios/{testimonioId}/{fileName} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null 
-                    && request.resource.size < 10 * 1024 * 1024;
-      allow delete: if request.auth != null;
-    }
-
-    // 👤 Reglas para Fotos de Perfil
-    match /users/{userId}/profile.jpg {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId
-                   && request.resource.size < 5 * 1024 * 1024;
-    }
-
-    // 💬 Archivos enviados por Chat
-    match /chats/{chatId}/{fileName} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
-    </pre>
+    <footer>
+      <p><i class="fa-solid fa-lock"></i> Testimonio Vivo © 2026 — Seguridad y transparencia para la comunidad</p>
+    </footer>
   </body>
 </html>
