@@ -1,173 +1,132 @@
 <html>
-  <head>
-    <title>Reglas públicas de Testimonio Vivo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap">
-    <style>
-      body { font-family: Arial, sans-serif; margin: 0; background-color: #fdfdfd; }
+<head>
+  <title>Reglas públicas de Testimonio Vivo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #111; color: #eee; }
+    h1 { font-size: 48px; color: gold; text-align: center; margin-bottom: 20px; }
+    .letter { display: inline-block; animation: drop 1s forwards; }
+    .star { font-size: 40px; color: gold; text-shadow: 0 0 15px gold; animation: spin 6s linear infinite; }
+    h2 { margin-top: 40px; font-size: 28px; display: flex; align-items: center; }
+    pre { font-size: 18px; line-height: 1.6; background: #222; padding: 20px; border-radius: 8px; overflow-x: auto; }
 
-      header {
-        background: linear-gradient(135deg, #ffd700, #ffcc00);
-        color: #333;
-        padding: 50px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        animation: gradientShift 8s infinite alternate;
-      }
-      @keyframes gradientShift {
-        0% { background: linear-gradient(135deg, #ffd700, #ffcc00); }
-        100% { background: linear-gradient(135deg, #ffcc00, #ffd700); }
-      }
-      header h1 {
-        margin: 0; font-size: 52px; font-weight: bold; font-family: 'Cinzel', serif;
-        color: #333; display: flex; align-items: center; justify-content: center; gap: 15px;
-        animation: fadeIn 3s ease-in-out;
-      }
-      header svg { width: 60px; height: 60px; fill: #b8860b; }
-      header p { margin: 10px 0 0; font-size: 22px; font-style: italic; color: #444; animation: fadeIn 4s ease-in-out; }
+    /* Animaciones */
+    @keyframes drop { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes flame { 0% { color: orange; } 50% { color: red; text-shadow: 0 0 20px yellow; } 100% { color: orange; } }
+    @keyframes rain { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(20px); opacity: 0; } }
+    @keyframes flash { 0%, 100% { color: #eee; } 50% { color: #00f; text-shadow: 0 0 20px #fff; } }
 
-      .reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease; }
-      .reveal.active { opacity: 1; transform: translateY(0); }
+    .fire { animation: flame 2s infinite; margin-right: 10px; }
+    .cloud { animation: flash 3s infinite; margin-right: 10px; }
+    .drop { display: inline-block; color: #0af; animation: rain 1s infinite; margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <!-- Título con letras doradas cayendo como teclas de piano -->
+  <h1>
+    <span class="letter" style="animation-delay:0s">T</span>
+    <span class="letter" style="animation-delay:0.2s">e</span>
+    <span class="letter" style="animation-delay:0.4s">s</span>
+    <span class="letter" style="animation-delay:0.6s">t</span>
+    <span class="letter" style="animation-delay:0.8s">i</span>
+    <span class="letter" style="animation-delay:1s">m</span>
+    <span class="letter" style="animation-delay:1.2s">o</span>
+    <span class="letter" style="animation-delay:1.4s">n</span>
+    <span class="letter" style="animation-delay:1.6s">i</span>
+    <span class="letter" style="animation-delay:1.8s">o</span>
+    <span class="letter" style="animation-delay:2s"> </span>
+    <span class="letter" style="animation-delay:2.2s">V</span>
+    <span class="letter" style="animation-delay:2.4s">i</span>
+    <span class="letter" style="animation-delay:2.6s">v</span>
+    <span class="letter" style="animation-delay:2.8s">o</span>
+    <span class="star">★</span>
+  </h1>
 
-      /* Firestore fuego */
-      h2.firestore-title {
-        font-size: 32px;
-        background: linear-gradient(90deg, red, orange, yellow);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: fireGlow 2s infinite alternate;
-      }
-      @keyframes fireGlow {
-        from { text-shadow: 0 0 10px red, 0 0 20px orange; }
-        to { text-shadow: 0 0 20px orange, 0 0 30px yellow; }
-      }
-      .firestore {
-        background-color: #fff5f5;
-        border: 2px solid #ff4d4d;
-        box-shadow: 0 0 15px rgba(255,0,0,0.6);
-      }
-
-      /* Storage lluvia */
-      h2.storage-title {
-        font-size: 32px;
-        background: linear-gradient(90deg, #0066ff, #00ccff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        position: relative;
-      }
-      .drop {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        font-size: 20px;
-        color: #00ccff;
-        animation: fall 1.5s infinite;
-      }
-      @keyframes fall {
-        0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(25px); opacity: 0; }
-      }
-      .storage {
-        background-color: #f0f8ff;
-        border: 2px solid #3399ff;
-        box-shadow: 0 0 15px rgba(0,102,255,0.6);
-      }
-
-      pre { font-size: 20px; line-height: 1.6; padding: 20px; border-radius: 8px; overflow-x: auto; }
-
-      footer { background-color: #333; color: white; text-align: center; padding: 20px; margin-top: 40px; }
-      footer p { margin: 0; font-size: 16px; }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-          <path d="M32 2l8 20h20l-16 12 6 20-18-12-18 12 6-20-16-12h20z"/>
-        </svg>
-        Testimonio Vivo
-      </h1>
-      <p>Reglas públicas — Seguridad, transparencia y confianza</p>
-    </header>
-
-    <section>
-      <h2 class="firestore-title reveal"><i class="fa-solid fa-database icon"></i> Firestore Rules</h2>
-      <pre class="firestore reveal">
+  <!-- Firestore Rules con fuego animado -->
+  <h2><span class="fire">🔥</span> Firestore Rules</h2>
+  <pre>
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // 👤 Perfiles de usuario
     match /users/{userId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null && request.auth.uid == userId;
     }
+
+    // 📖 Testimonios
     match /testimonios/{testimonioId} {
       allow read: if true;
       allow create: if request.auth != null;
       allow update, delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
     }
+
+    // 💬 Salas de Chat y Señalización WebRTC
+    match /rooms/{roomId} {
+      allow read, write: if request.auth != null;
+
+      match /messages/{messageId} {
+        allow read, write: if request.auth != null;
+      }
+
+      match /candidates/{candidateId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // 📡 Chats Legacy
     match /chats/{messageId} {
       allow read, write: if request.auth != null;
     }
+
+    // 💎 Planes de Suscripción
     match /plans/{planId} {
       allow read: if true;
       allow write: if false;
     }
+
+    // 💰 Donaciones
     match /donations/{donationId} {
       allow read: if request.auth != null && request.auth.uid == resource.data.userId;
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
     }
   }
 }
-      </pre>
+  </pre>
 
-      <h2 class="storage-title reveal"><i class="fa-solid fa-cloud icon"></i> Storage Rules
-        <span class="drop">💧</span>
-        <span class="drop" style="left:55%; animation-delay:0.5s;">💧</span>
-        <span class="drop" style="left:45%; animation-delay:1s;">💧</span>
-      </h2>
-      <pre class="storage reveal">
+  <!-- Storage Rules con nube, relámpagos y lluvia -->
+  <h2><span class="cloud">☁️</span> Storage Rules <span class="drop">💧</span><span class="drop">💧</span></h2>
+  <pre>
 rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
+    
+    // 🎤 Fotos y audios de Testimonios
     match /testimonios/{testimonioId}/{fileName} {
       allow read: if request.auth != null;
-      allow create: if request.auth != null 
-                    && request.resource.size < 10 * 1024 * 1024;
+      allow create: if request.auth != null && request.resource.size < 10 * 1024 * 1024;
       allow delete: if request.auth != null;
     }
+
+    // 👤 Foto de perfil del usuario
     match /users/{userId}/profile.jpg {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId
-                   && request.resource.size < 5 * 1024 * 1024;
+      allow write: if request.auth != null 
+                   && request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
     }
+
+    // 💬 Multimedia de Chats
     match /chats/{chatId}/{fileName} {
-      allow read, write: if request.auth != null;
+      allow read, write: if request.auth != null 
+                         && request.resource.size < 15 * 1024 * 1024;
     }
   }
 }
-      </pre>
-    </section>
-
-    <footer>
-      <p><i class="fa-solid fa-lock"></i> Testimonio Vivo © 2026 — Seguridad y transparencia para la comunidad</p>
-    </footer>
-
-    <script>
-      function revealOnScroll() {
-        var reveals = document.querySelectorAll(".reveal");
-        for (var i = 0; i < reveals.length; i++) {
-          var windowHeight = window.innerHeight;
-          var elementTop = reveals[i].getBoundingClientRect().top;
-          var elementVisible = 100;
-          if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add("active");
-          }
-        }
-      }
-      window.addEventListener("scroll", revealOnScroll);
-      window.addEventListener("load", revealOnScroll);
-    </script>
-  </body>
+  </pre>
+</body>
 </html>
