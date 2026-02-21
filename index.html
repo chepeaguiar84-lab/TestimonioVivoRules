@@ -15,6 +15,7 @@
       font-size: 16px;
       color: gold;
       text-shadow: 0 0 10px #ffd700;
+      animation: glow 3s infinite;
     }
 
     /* Animaciones */
@@ -23,6 +24,7 @@
     @keyframes flame { 0% { color: orange; } 50% { color: red; text-shadow: 0 0 20px yellow; } 100% { color: orange; } }
     @keyframes rain { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(20px); opacity: 0; } }
     @keyframes flash { 0%, 100% { color: #eee; } 50% { color: #00f; text-shadow: 0 0 20px #fff; } }
+    @keyframes glow { 0% { text-shadow: 0 0 10px #ffd700; } 50% { text-shadow: 0 0 20px #fff, 0 0 30px #ffd700; } 100% { text-shadow: 0 0 10px #ffd700; } }
 
     .fire { animation: flame 2s infinite; margin-right: 10px; }
     .cloud { animation: flash 3s infinite; margin-right: 10px; }
