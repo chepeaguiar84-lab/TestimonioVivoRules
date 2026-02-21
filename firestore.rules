@@ -16,6 +16,8 @@
         padding: 20px;
         border-radius: 8px;
         overflow-x: auto;
+        white-space: pre-wrap; /* 👈 Ajusta en pantallas pequeñas */
+        word-wrap: break-word; /* 👈 Evita cortes raros */
       }
     </style>
   </head>
@@ -29,43 +31,46 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // 👤 Reglas para Perfiles de Usuario
+    // 👤 Perfiles de usuario: lectura para autenticados, escritura solo para el dueño
     match /users/{userId} {
-      // Cualquier usuario autenticado puede ver un perfil (para el chat/testimonios)
       allow read: if request.auth != null;
-      // Solo el dueño del perfil puede editar su propia información
       allow write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // 📖 Reglas para Testimonios
+    // 📖 Testimonios: Lectura pública, creación para autenticados, edición solo para el autor
     match /testimonios/{testimonioId} {
-      // Los testimonios son públicos para lectura
       allow read: if true;
-      // Solo usuarios autenticados pueden crear testimonios
       allow create: if request.auth != null;
-      // Solo el autor original puede editar o borrar su testimonio
       allow update, delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
     }
 
-    // 💬 Reglas para el Chat en Tiempo Real
+    // 💬 Salas de Chat y Señalización WebRTC
+    match /rooms/{roomId} {
+      allow read, write: if request.auth != null;
+
+      match /messages/{messageId} {
+        allow read, write: if request.auth != null;
+      }
+
+      match /candidates/{candidateId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // 📡 Chats Legacy (compatibilidad)
     match /chats/{messageId} {
-      // Solo usuarios registrados pueden participar en el chat
       allow read, write: if request.auth != null;
     }
 
-    // 💎 Reglas para Planes Premium
+    // 💎 Planes de Suscripción: Solo lectura pública
     match /plans/{planId} {
-      // Todo el mundo puede ver los precios y beneficios
       allow read: if true;
-      // Nadie puede cambiar los planes desde la app (solo desde la consola de Firebase)
       allow write: if false;
     }
-    
-    // 💰 Reglas para Donaciones
+
+    // 💰 Donaciones: Privacidad total por usuario y validación de identidad
     match /donations/{donationId} {
-      // El usuario solo puede ver sus propias donaciones
       allow read: if request.auth != null && request.auth.uid == resource.data.userId;
-      // El usuario puede crear una donación si está autenticado
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
     }
   }
