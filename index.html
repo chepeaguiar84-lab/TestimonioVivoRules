@@ -1,4 +1,60 @@
-// Reglas públicas de Testimonio Vivo + Angelicas Connections
+<html>
+<head>
+  <title>Reglas públicas de Testimonio Vivo & Angelicas Connections</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #111; color: #eee; }
+    h1 { font-size: 48px; color: gold; text-align: center; margin-bottom: 20px; }
+    .letter { display: inline-block; animation: drop 1s forwards; }
+    .star { font-size: 40px; color: gold; text-shadow: 0 0 15px gold; animation: spin 6s linear infinite; }
+    h2 { margin-top: 40px; font-size: 28px; display: flex; align-items: center; }
+    pre { font-size: 18px; line-height: 1.6; background: #222; padding: 20px; border-radius: 8px; overflow-x: auto; }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+      color: gold;
+      text-shadow: 0 0 10px #ffd700;
+      animation: glow 3s infinite;
+    }
+
+    /* Animaciones */
+    @keyframes drop { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes flame { 0% { color: orange; } 50% { color: red; text-shadow: 0 0 20px yellow; } 100% { color: orange; } }
+    @keyframes rain { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(20px); opacity: 0; } }
+    @keyframes flash { 0%, 100% { color: #eee; } 50% { color: #00f; text-shadow: 0 0 20px #fff; } }
+    @keyframes glow { 0% { text-shadow: 0 0 10px #ffd700; } 50% { text-shadow: 0 0 20px #fff, 0 0 30px #ffd700; } 100% { text-shadow: 0 0 10px #ffd700; } }
+
+    .fire { animation: flame 2s infinite; margin-right: 10px; }
+    .cloud { animation: flash 3s infinite; margin-right: 10px; }
+    .drop { display: inline-block; color: #0af; animation: rain 1s infinite; margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <!-- Título con letras doradas cayendo -->
+  <h1>
+    <span class="letter" style="animation-delay:0s">T</span>
+    <span class="letter" style="animation-delay:0.2s">e</span>
+    <span class="letter" style="animation-delay:0.4s">s</span>
+    <span class="letter" style="animation-delay:0.6s">t</span>
+    <span class="letter" style="animation-delay:0.8s">i</span>
+    <span class="letter" style="animation-delay:1s">m</span>
+    <span class="letter" style="animation-delay:1.2s">o</span>
+    <span class="letter" style="animation-delay:1.4s">n</span>
+    <span class="letter" style="animation-delay:1.6s">i</span>
+    <span class="letter" style="animation-delay:1.8s">o</span>
+    <span class="letter" style="animation-delay:2s"> </span>
+    <span class="letter" style="animation-delay:2.2s">V</span>
+    <span class="letter" style="animation-delay:2.4s">i</span>
+    <span class="letter" style="animation-delay:2.6s">v</span>
+    <span class="letter" style="animation-delay:2.8s">o</span>
+    <span class="star">★</span>
+  </h1>
+
+  <!-- Firestore Rules -->
+  <h2><span class="fire">🔥</span> Firestore Rules</h2>
+  <pre>
 rules_version = '2';
 
 service cloud.firestore {
@@ -53,8 +109,53 @@ service cloud.firestore {
     }
   }
 }
+  </pre>
 
-<!-- Footer con año y mensaje de claridad -->
-<footer>
-  Testimonio Vivo & Angelicas Connections © 2026 — Claridad, transparencia y confianza
-</footer>
+  <!-- Storage Rules -->
+  <h2><span class="cloud">☁️</span> Storage Rules <span class="drop">💧</span><span class="drop">💧</span></h2>
+  <pre>
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // 🎤 Testimonios (Testimonio Vivo)
+    match /testimonios/{testimonioId}/{fileName} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null;
+    }
+
+    // 👤 Foto de perfil (Testimonio Vivo)
+    match /users/{userId}/profile.jpg {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null 
+                   && request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // 💬 Multimedia de Chats (Testimonio Vivo)
+    match /chats/{chatId}/{fileName} {
+      allow read, write: if request.auth != null 
+                         && request.resource.size < 15 * 1024 * 1024;
+    }
+
+    // 🌟 Angelicas Connections
+    match /connections/{userId}/{fileName} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null 
+                    && request.auth.uid == userId
+                    && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+  </pre>
+
+  <!-- Footer -->
+  <footer>
+    Testimonio Vivo & Angelicas Connections © 2026 — Claridad, transparencia y confianza
+  </footer>
+</body>
+</html>
